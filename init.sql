@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS visitors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visited_at DATETIME
+);

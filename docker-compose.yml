@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    build: ./app
+    container_name: monitoring_app
+    env_file: .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - monitoring_net
+
+  db:
+    image: mysql:8.0
+    container_name: monitoring_db
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - monitoring_net
+
+networks:
+  monitoring_net:
+    driver: bridge
+
+volumes:
+  db_data:
